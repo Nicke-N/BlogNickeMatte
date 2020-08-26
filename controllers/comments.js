@@ -21,11 +21,10 @@ exports.getComment = async (req, res) => {
 
 exports.insertComment = async (req, res) => {
   const postID = req.params.id;
-  const userID = req.user._id;
-  const { message, timestamp } = req.body;
+  const { user, message, timestamp } = req.body;
   try {
     const comment = await commentModel.insertComment(
-      userID,
+      user,
       message,
       timestamp,
       postID
@@ -38,14 +37,13 @@ exports.insertComment = async (req, res) => {
 
 exports.updateComment = async (req, res) => {
   const commentId = req.params.id;
-  const { message, timestamp } = req.body;
-  const userID = req.user.id
+  const { user, message, timestamp } = req.body;
   try {
     const comment = await commentModel.updateComment(
       commentId,
+      user,
       message,
-      timestamp,
-      userID
+      timestamp
     );
     res.json({ message: "Number of updated comments: " + comment }).status(200);
   } catch (error) {
