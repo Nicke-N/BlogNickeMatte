@@ -14,18 +14,24 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         const doc = await db.comments.find({_id: id});
-        resolve(doc);
+        resolve({
+          ...doc,
+          isOwner(userId) {
+            // console.log(doc[0].ownerId)
+            return doc[0].ownerId == userId
+          }
+        });
       } catch (error) {
         reject(error)
       }
     });
   },
 
-  insertComment: function (user, message, timestamp, postID) {
+  insertComment: function (ownerId, message, timestamp, postID) {
     return new Promise(async (resolve, reject) => {
       try {
         const doc = await db.comments.insert({
-          user,
+          ownerId,
           message,
           timestamp,
           postID,
@@ -37,21 +43,26 @@ module.exports = {
     });
   },
 
-  updateComment: function (id, user, message, timestamp) {
+  updateComment: function (commentId, message, timestamp) {
     return new Promise(async (resolve, reject) => {
       try {
         const doc = await db.comments.update(
-          { _id: id },
+          { _id: commentId },
           {
             $set: {
-              user: user,
+              // ownerId: ownerId,
               message: message,
-              timestamp: timestamp,
+              timestamp: timestamp
             },
           },
           {}
         );
-        resolve(doc);
+        resolve({
+          ...doc,
+          isOwner (userId) {
+            return doc[0].ownerId == userId
+          }
+        });
       } catch {
         reject(error);
       }

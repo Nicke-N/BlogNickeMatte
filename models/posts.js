@@ -14,17 +14,24 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         const doc = await db.posts.find({_id: id});
-        resolve(doc);
+        resolve({
+          ...doc,
+          isOwner(userId) {
+            return doc[0].ownerId == userId
+          }
+        });
       } catch (error) {
         reject(error)
       }
     });
   },
 
-  insertPost: function (title, content) {
+  insertPost: function (ownerId, title, content) {
     return new Promise(async (resolve, reject) => {
       try {
-        const post = await db.posts.insert({ title, content });
+        
+        
+        const post = await db.posts.insert({ownerId, title, content });
         resolve(post);
       } catch (error) {
         reject(error);
@@ -43,7 +50,7 @@ module.exports = {
     });
   },
 
-  updatePost: function (id, title, content) {
+  updatePost: function (ownerId, id, title, content) {
     return new Promise(async (resolve, reject) => {
       try {
         const post = await db.posts.update({ _id: id }, { title, content }, {});

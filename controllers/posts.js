@@ -13,7 +13,12 @@ exports.getPost = async (req, res) => {
   const id = req.params.id;
   try {
     const post = await postModel.getPost(id);
-    res.json(post);
+    if(post.isOwner(req.user._id)){
+      res.json(post);
+    } else {
+      res.sendStatus(401)
+    }
+    
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -21,8 +26,9 @@ exports.getPost = async (req, res) => {
 
 exports.insertPost = async (req, res) => {
   const { title, content } = req.body;
+  const ownerId = req.user._id
   try {
-    const post = await postModel.insertPost(title, content);
+    const post = await postModel.insertPost(ownerId, title, content);
     res.json(post);
   } catch (error) {
     res.json({ error: error.message });
@@ -43,8 +49,13 @@ exports.updatePost = async (req, res) => {
   const postID = req.params.id;
   const { title, content } = req.body;
   try {
-    const post = await postModel.updatePost(postID, title, content);
-    res.json({ message: "Number of updated posts: " + post });
+    const post = await postModel.updatePost(ownerId, postID, title, content);
+    if(post.isOwner(req.user._id)){
+      res.json({ message: "Number of updated posts: " + post });
+    } else {
+      res.sendStatus(401)
+    }
+    
   } catch (error) {
     res.json({ error: error.message });
   }
