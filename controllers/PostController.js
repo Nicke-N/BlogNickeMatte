@@ -1,4 +1,25 @@
 const postModel = require("../models/PostModel");
+const AccessControl = require('accesscontrol')
+const ac = new AccessControl()
+ac.grant('user')
+  .createOwn('post')
+  .deleteOwn('post')
+  .updateOwn('post')
+  .readOwn('post')
+  .createOwn('comment')
+  .deleteOwn('comment')
+  .updateOwn('comment')
+  .readAny('comment')
+.grant('admin')
+  .extend('user')
+  .updateAny('post')
+  .deleteAny('post')
+  .updateAny('comment')
+  .deleteAny('comment')
+
+  /**
+ * men ja tror, att man kan använda en route ist för två (admin, user)
+ */
 
 exports.getPosts = async (req, res) => {
   
@@ -9,6 +30,8 @@ exports.getPosts = async (req, res) => {
     res.json({ error: error.message});
   }
 };
+
+
 
 exports.getUserPosts = async (req, res) => {
   const ownerId = req.user._id
@@ -22,9 +45,10 @@ exports.getUserPosts = async (req, res) => {
 
 exports.getPost = async (req, res) => {
   const id = req.params.id;
+  const permission = ac.can(req.user.role).readOwn('post');
   try {
     const post = await postModel.getPost(id);
-    if(post.isOwner(req.user._id) || req.user.role == 'admin'){
+    if(permission){
       res.json(post);
     } else {
       res.sendStatus(401)
