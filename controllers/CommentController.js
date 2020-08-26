@@ -1,4 +1,4 @@
-const commentModel = require("../models/comments");
+const commentModel = require("../models/CommentModel");
 
 exports.getComments = async (req, res) => {
   try {
@@ -51,9 +51,9 @@ exports.updateComment = async (req, res) => {
   try {
     const comment = await commentModel.getComment(commentId);
     if(comment.isOwner(req.user._id)) {
-      
       const { message, timestamp } = req.body;
       try {
+
       const updatedComment = await commentModel.updateComment(
         commentId,
         message,
@@ -65,22 +65,36 @@ exports.updateComment = async (req, res) => {
         res.json({ error: error.message }).status(500);
       }
 
-
+    } else {
+      res.sendStatus(401)
     }
 
   } catch(error) {
-
+    res.send(error)
   }
+}
  
-
-  
 
 exports.deleteComment = async (req, res) => {
   const commentId = req.params.id;
   try {
-    const post = await commentModel.deleteComment(commentId);
-    res.json({ message: "Number of deleted comments: " + post });
-  } catch (error) {
-    res.json({ error: error.message });
+    const comment = await commentModel.getComment(commentId);
+    if(comment.isOwner(req.user._id)) {
+      try {
+      const deletedComment = await commentModel.deleteComment(
+        commentId
+      );
+      
+      res.json({ message: "Comment was deleted"}).status(200);
+      } catch (error) {
+        res.json({ error: error.message }).status(500);
+      }
+
+    } else {
+      res.sendStatus(401)
+    }
+
+  } catch(error) {
+    res.send(error)
   }
-};
+}

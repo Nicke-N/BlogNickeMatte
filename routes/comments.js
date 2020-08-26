@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const commentController = require("../controllers/comments.js");
+const commentController = require("../controllers/CommentController");
 const auth = require("../middleware/auth.js")
 
 // GET ALL EXISTING POSTS

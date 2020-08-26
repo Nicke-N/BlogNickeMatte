@@ -10,10 +10,10 @@ module.exports = {
     });
   },
 
-  getComment: function (id) {
+  getComment: function (commentId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const doc = await db.comments.find({_id: id});
+        const doc = await db.comments.find({_id: commentId});
         resolve({
           ...doc,
           isOwner(userId) {
@@ -34,7 +34,7 @@ module.exports = {
           ownerId,
           message,
           timestamp,
-          postID,
+          postID
         });
         resolve(doc);
       } catch (error) {
@@ -69,10 +69,10 @@ module.exports = {
     });
   },
 
-  deleteComment: function (id) {
+  deleteComment: function (commentId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const post = await db.comments.remove({ _id: id });
+        const post = await db.comments.remove({ _id: commentId });
         resolve(post);
       } catch (error) {
         reject(error);

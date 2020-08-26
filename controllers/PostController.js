@@ -1,4 +1,4 @@
-const postModel = require("../models/posts");
+const postModel = require("../models/PostModel");
 
 exports.getPosts = async (req, res) => {
   try {
@@ -36,22 +36,49 @@ exports.insertPost = async (req, res) => {
 };
 
 exports.deletePost = async (req, res) => {
-  const postID = req.params.id;
+  const postId = req.params.id;
+  
   try {
-    const post = await postModel.deletePost(postID);
-    res.json({ message: "Number of deleted posts: " + post });
+    const post = await postModel.getPost(postId);
+    if(post.isOwner(req.user._id)){
+      try {
+        const deletedPost = await postModel.deletePost(postId);
+        if(post.isOwner(req.user._id)){
+          res.json({ message: "Number of deleted posts: " + deletedPost });
+        } else {
+          res.sendStatus(401)
+        }
+
+      } catch (error) {
+        res.json({ error: error.message });
+      }
+    } else {
+      res.sendStatus(401)
+    }
+    
   } catch (error) {
     res.json({ error: error.message });
   }
 };
 
 exports.updatePost = async (req, res) => {
-  const postID = req.params.id;
+  const postId = req.params.id;
   const { title, content } = req.body;
+
   try {
-    const post = await postModel.updatePost(ownerId, postID, title, content);
+    const post = await postModel.getPost(postId);
     if(post.isOwner(req.user._id)){
-      res.json({ message: "Number of updated posts: " + post });
+      try {
+        const updatedPost = await postModel.updatePost(postId, title, content);
+        if(post.isOwner(req.user._id)){
+          res.json({ message: "Number of updated posts: " + updatedPost });
+        } else {
+          res.sendStatus(401)
+        }
+
+      } catch (error) {
+        res.json({ error: error.message });
+      }
     } else {
       res.sendStatus(401)
     }

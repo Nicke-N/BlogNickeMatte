@@ -10,10 +10,10 @@ module.exports = {
     });
   },
 
-  getPost: function (id) {
+  getPost: function (postId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const doc = await db.posts.find({_id: id});
+        const doc = await db.posts.find({_id: postId});
         resolve({
           ...doc,
           isOwner(userId) {
@@ -39,10 +39,10 @@ module.exports = {
     });
   },
 
-  deletePost: function (id) {
+  deletePost: function (postId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const post = await db.posts.remove({ _id: id });
+        const post = await db.posts.remove({ _id: postId });
         resolve(post);
       } catch (error) {
         reject(error);
@@ -50,14 +50,14 @@ module.exports = {
     });
   },
 
-  updatePost: function (ownerId, id, title, content) {
+  updatePost: function (postId, title, content) {
     return new Promise(async (resolve, reject) => {
       try {
-        const post = await db.posts.update({ _id: id }, { title, content }, {});
+        const post = await db.posts.update({ _id: postId }, {$set:{ title: title, content: content }}, {});
         resolve(post);
       } catch (error) {
         reject(error);
       }
     });
-  },
+  }
 };

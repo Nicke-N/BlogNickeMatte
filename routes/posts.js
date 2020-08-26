@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const postController = require("../controllers/posts.js");
+const postController = require("../controllers/PostController.js");
 const auth = require("../middleware/auth.js")
 
 // CREATE A NEW POST
