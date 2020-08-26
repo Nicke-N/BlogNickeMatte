@@ -1,11 +1,12 @@
 module.exports = {
-    createUser: function (username, password) {
+    createUser: function (username, password, role) {
         
         return new Promise(async (resolve, reject) => {
             try {
               const doc = await db.users.insert({
                 username, 
-                password
+                password,
+                role
                 });
               resolve(doc);
             } catch (error) {

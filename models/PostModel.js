@@ -2,7 +2,19 @@ module.exports = {
   getPosts: function () {
     return new Promise(async (resolve, reject) => {
       try {
+        
         const doc = await db.posts.find({});
+        resolve(doc);
+      } catch (error) {
+        
+        reject(error);
+      }
+    });
+  },
+  getUserPosts: function (ownerId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const doc = await db.posts.find({ownerId: ownerId});
         resolve(doc);
       } catch (error) {
         reject(error);

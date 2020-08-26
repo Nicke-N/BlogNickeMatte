@@ -10,6 +10,17 @@ module.exports = {
     });
   },
 
+  getUserComments: function (ownerId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const doc = await db.comments.find({ownerId: ownerId});
+        resolve(doc);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   getComment: function (commentId) {
     return new Promise(async (resolve, reject) => {
       try {

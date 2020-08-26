@@ -1,11 +1,22 @@
 const postModel = require("../models/PostModel");
 
 exports.getPosts = async (req, res) => {
+  
   try {
     const posts = await postModel.getPosts();
     res.json(posts);
   } catch (error) {
-    res.json({ error: error.message });
+    res.json({ error: error.message});
+  }
+};
+
+exports.getUserPosts = async (req, res) => {
+  const ownerId = req.user._id
+  try {
+    const posts = await postModel.getUserPosts(ownerId);
+    res.json(posts);
+  } catch (error) {
+    res.json({ error: error.messag});
   }
 };
 
@@ -13,7 +24,7 @@ exports.getPost = async (req, res) => {
   const id = req.params.id;
   try {
     const post = await postModel.getPost(id);
-    if(post.isOwner(req.user._id)){
+    if(post.isOwner(req.user._id) || req.user.role == 'admin'){
       res.json(post);
     } else {
       res.sendStatus(401)
@@ -40,14 +51,11 @@ exports.deletePost = async (req, res) => {
   
   try {
     const post = await postModel.getPost(postId);
-    if(post.isOwner(req.user._id)){
+    if(post.isOwner(req.user._id) || req.user.role == 'admin'){
       try {
         const deletedPost = await postModel.deletePost(postId);
-        if(post.isOwner(req.user._id)){
-          res.json({ message: "Number of deleted posts: " + deletedPost });
-        } else {
-          res.sendStatus(401)
-        }
+
+          res.json({ message: "Number of deleted posts: " + deletedPost });        
 
       } catch (error) {
         res.json({ error: error.message });
@@ -67,14 +75,11 @@ exports.updatePost = async (req, res) => {
 
   try {
     const post = await postModel.getPost(postId);
-    if(post.isOwner(req.user._id)){
+    if(post.isOwner(req.user._id) || req.user.role == 'admin'){
       try {
         const updatedPost = await postModel.updatePost(postId, title, content);
-        if(post.isOwner(req.user._id)){
-          res.json({ message: "Number of updated posts: " + updatedPost });
-        } else {
-          res.sendStatus(401)
-        }
+        
+        res.json({ message: "Number of updated posts: " + updatedPost });
 
       } catch (error) {
         res.json({ error: error.message });

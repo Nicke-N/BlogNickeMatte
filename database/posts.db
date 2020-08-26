@@ -1,6 +1,5 @@
 {"user":"comment n1","message":"2020-08-19 14.16","timestamp":"U4Hj1nt2K9Th0Gah","_id":"6RNt0xauwumuwr2s"}
 {"title":"hmm","content":"hej2","_id":"7k20IdU9ovZO7QOn"}
-{"ownerId":"lyD8X8dl9ccVQeFE","title":"ändring","content":"ännu en123","_id":"7xfFLidibJs9DJB3"}
 {"ownerId":"lyD8X8dl9ccVQeFE","title":"elins","content":"ännu en","_id":"9FFsTX7keWQmv9Zn"}
 {"content":"Content of my third post","_id":"9v2s3xDALOrwllYY"}
 {"title":"My Second Post","_id":"U4Hj1nt2K9Th0Gah"}
@@ -9,5 +8,5 @@
 {"title":"My First Post","_id":"fuZfT0AvZw0qBpV5"}
 {"title":"My Third Post","_id":"iki4KF2B4alftSgN"}
 {"title":"other test","content":"Content of my post","_id":"rpsQM9LHYveDPp9w"}
+{"ownerId":"lyD8X8dl9ccVQeFE","title":"another","content":"rer","_id":"yYrCCaXvsvw4eNoE"}
 {"title":"My UPDATED POST again","content":"Content of my updated post","_id":"z32dDYRO6N3kSy45"}
-{"$$deleted":true,"_id":"7xfFLidibJs9DJB3"}
