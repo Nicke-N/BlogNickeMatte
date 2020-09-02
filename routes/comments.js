@@ -8,6 +8,8 @@ router.get("/admin", Auth.admin, commentController.getComments);
 
 router.get("/", Auth.user, commentController.getUserComments)
 
+router.get('/count', commentController.countComments)
+
 // GET SINGLE POST
 router.get("/:id", Auth.user, commentController.getComment);
 

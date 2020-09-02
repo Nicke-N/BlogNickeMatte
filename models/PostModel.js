@@ -1,3 +1,5 @@
+const db = require("./db")
+
 module.exports = {
   getPosts: function () {
     return new Promise(async (resolve, reject) => {
@@ -5,6 +7,29 @@ module.exports = {
         
         const doc = await db.posts.find({});
         resolve(doc);
+      } catch (error) {
+        
+        reject(error);
+      }
+    });
+  },
+  search: (text) => {
+    return new Promise(async (resolve, reject) => {
+      const newText = new RegExp(text)
+      try {
+        const doc = await db.posts.findOne({$or: [{content: newText}, {title: newText}]})
+        resolve(doc)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  },
+  countPosts: function () {
+    return new Promise(async (resolve, reject) => {
+      try {
+        
+        const doc = await db.posts.find({});
+        resolve(doc.length);
       } catch (error) {
         
         reject(error);
@@ -41,8 +66,6 @@ module.exports = {
   insertPost: function (ownerId, title, content) {
     return new Promise(async (resolve, reject) => {
       try {
-        
-        
         const post = await db.posts.insert({ownerId, title, content });
         resolve(post);
       } catch (error) {

@@ -6,6 +6,8 @@ const Auth = require("../middleware/auth.js")
 // CREATE A NEW POST
 router.post("/", Auth.user, postController.insertPost);
 
+router.get('/count', postController.countPosts);
+
 // GET ALL USER POSTS
 router.get("/", Auth.user, postController.getUserPosts);
 

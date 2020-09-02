@@ -1,5 +1,8 @@
 const postModel = require("../models/PostModel");
-const AccessControl = require('accesscontrol')
+const AccessControl = require('accesscontrol');
+const userModel = require("../models/UserModel");
+
+
 const ac = new AccessControl()
 ac.grant('user')
   .createOwn('post')
@@ -27,11 +30,19 @@ exports.getPosts = async (req, res) => {
     const posts = await postModel.getPosts();
     res.json(posts);
   } catch (error) {
-    res.json({ error: error.message});
+    res.json({ error: error.message });
   }
 };
 
-
+exports.countPosts = async (req,res) => {
+  
+  try {
+    const posts = await postModel.countPosts();
+    res.json(posts);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+}
 
 exports.getUserPosts = async (req, res) => {
   const ownerId = req.user._id
@@ -64,6 +75,11 @@ exports.insertPost = async (req, res) => {
   const ownerId = req.user._id
   try {
     const post = await postModel.insertPost(ownerId, title, content);
+    console.log(1)
+    const updateUser = await userModel.setPost(ownerId, post._id)
+    console.log(2)
+    console.log(updateUser)
+ 
     res.json(post);
   } catch (error) {
     res.json({ error: error.message });

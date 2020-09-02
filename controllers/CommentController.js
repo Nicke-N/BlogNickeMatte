@@ -19,6 +19,16 @@ exports.getUserComments = async (req, res) => {
   }
 };
 
+exports.countComments = async (req,res) => {
+
+  try {
+    const comments = await commentModel.countComments();
+    res.json(comments);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+}
+
 exports.getComment = async (req, res) => {
   const id = req.params.id;
   try {
@@ -40,14 +50,13 @@ exports.getComment = async (req, res) => {
 exports.insertComment = async (req, res) => {
   const postID = req.params.id;
   const ownerId = req.user._id;
-  const { message, timestamp } = req.body;
+  const { message} = req.body;
   // console.log(user)
   console.log(req.user)
   try {
     const comment = await commentModel.insertComment(
       ownerId,
       message,
-      timestamp,
       postID
     );
     res.json(comment).status(200);
