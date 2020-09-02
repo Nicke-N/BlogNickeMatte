@@ -4,48 +4,61 @@ const bcrypt = require('bcryptjs')
 const db = require("./db")
 
 module.exports = {
-    createUser: function (username, password, role) {
-        
-        return new Promise(async (resolve, reject) => {
-          const posts = []
-          const comments = []
-            try {
-              const doc = await db.users.insert({
-                username, 
-                password,
-                role,
-                posts,
-                comments
-                });
-              resolve(doc);
-            } catch (error) {
-              reject(error);
-            }
-          });
-        },
-    loginUser: function (username, password) {
+    createUser: async (username, password, role) => {
       
+      const user = await module.exports.findUser(username)
+
+
+      if(user) {
+        return "User exists!"
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        return new Promise(async (resolve, reject) => {
+            const posts = []
+            const comments = []
+              try {
+                const doc = await db.users.insert({
+                  username, 
+                  hashedPassword,
+                  role,
+                  posts,
+                  comments
+                  });
+                resolve(doc);
+              } catch (error) {
+                reject(error);
+              }
+          });
+      }
+      
+      },
+    loginUser: function (username, password) {
+      console.log(username)
       return new Promise(async (resolve, reject) => {    
         try {
 
             const user = await module.exports.findUser(username)
 
             if(user) {
-                console.log(1)
-                if(bcrypt.compareSync(password, user.password)) {
 
-                  const token = jwt.sign(user, secret)
-                    console.log(3)
-                  resolve({
-                    token: token,
-                    msg: 'Login suceeded'
-                  })
+                bcrypt.compare(password, user.hashedPassword, (err, result) => {
+
+                  if(result){
+
+                    const token = jwt.sign(user, secret)
                     
-                } else {
-                  console.log(2)
-                    reject({msg: 'Login failed'})
-                    
-                }
+                    resolve({
+                      token: token
+                    })
+                      
+                  } else {
+                      reject({msg: err + 'Login failed'})
+                      
+                  }
+                }) 
+
+                
                
             } else {
                 reject({msg:'user does not exist'})

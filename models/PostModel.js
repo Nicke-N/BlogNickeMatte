@@ -16,6 +16,7 @@ module.exports = {
   search: (text) => {
     return new Promise(async (resolve, reject) => {
       const newText = new RegExp(text)
+      console.log(newText)
       try {
         const doc = await db.posts.findOne({$or: [{content: newText}, {title: newText}]})
         resolve(doc)

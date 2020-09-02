@@ -86,6 +86,21 @@ exports.insertPost = async (req, res) => {
   }
 };
 
+exports.searchPost = async (req, res) => {
+
+  const text = req.query.text;
+ console.log(text)
+  try {
+
+    console.log(1)
+    const post = await postModel.search(text);
+    console.log(2)
+    res.json(post);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
 exports.deletePost = async (req, res) => {
   const postId = req.params.id;
   

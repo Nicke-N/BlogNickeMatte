@@ -8,6 +8,8 @@ router.post("/", Auth.user, postController.insertPost);
 
 router.get('/count', postController.countPosts);
 
+router.get('/search', Auth.user, postController.searchPost)
+
 // GET ALL USER POSTS
 router.get("/", Auth.user, postController.getUserPosts);
 

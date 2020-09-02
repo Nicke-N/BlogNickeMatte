@@ -1,5 +1,3 @@
-{"username":"nickeChai","password":"nicke","role":"user","posts":["KvyZVhVMMNzTa5GO"],"comments":["LoScDLdZCehmDqvf"],"_id":"U6a8m9KrdjLgII2r"}
-{"$$deleted":true,"_id":"U6a8m9KrdjLgII2r"}
-{"username":"nickeChai","password":"nicke","role":"user","posts":[],"comments":[],"_id":"IZkmBW8wGGQkZXky"}
-{"username":"nickeChai","password":"nicke","role":"user","posts":["ubR0OoqFdQmRAvnM"],"comments":[],"_id":"IZkmBW8wGGQkZXky"}
-{"username":"nickeChai","password":"nicke","role":"user","posts":["ubR0OoqFdQmRAvnM"],"comments":["8n9iVpWL1SUDAOgb"],"_id":"IZkmBW8wGGQkZXky"}
+{"username":"nickeChai","hashedPassword":"$2a$10$Vq.fZZDIoIwODp1j50u9SuXbaawxIv2RK/ex.RZRAl/Q3rS9huruq","role":"user","posts":[],"comments":[],"_id":"M0i5VMhhbMbFUmIW"}
+{"$$deleted":true,"_id":"M0i5VMhhbMbFUmIW"}
+{"username":"nickeChai","hashedPassword":"$2a$10$5xpXyPkSkfaw1W7fGWzub.dct68AV6AwzAIRdXC882e1AtBKVKjPC","role":"user","posts":[],"comments":[],"_id":"6rlj35PKoaC4qFYV"}

@@ -6,7 +6,7 @@ exports.createUser = async (req, res) => {
     try {
         const existingUser = await userModel.findUser(username)
         if(!existingUser) {
-            const user = await userModel.addUser(
+            const user = await userModel.createUser(
                 username, 
                 password,
                 role
